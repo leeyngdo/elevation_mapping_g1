@@ -110,7 +110,6 @@ RUN apt-get update && \
 RUN uv pip install --upgrade pip \
     empy==3.3.4 \
     catkin_pkg \
-    pytest \
     setuptools==64.0 \
     wheel \
     ninja \
@@ -129,8 +128,9 @@ RUN uv pip install --upgrade pip \
     cupy-cuda12x \
     simple-parsing \
     transforms3d \
-    scipy 
-
+    scipy \
+    git+https://github.com/leeyngdo/ros2_numpy.git@humble_setup
+    
 # Install ROS2 packages
 RUN apt update && apt install -y \
     python3-colcon-common-extensions \
@@ -187,12 +187,6 @@ RUN ln -s ${WORKSPACE}/src/elevation_mapping_cupy/docker/extra_rosdeps.yaml /etc
 
 # For elevation_mapping_cupy
 ENV TURTLEBOT3_MODEL=waffle_realsense_depth
-RUN mkdir -p /home/ws/src/ && \
-    cd /home/ws && \
-    vcs import --recursive src < /src.repos && \
-    . /opt/ros/humble/setup.sh && \
-    colcon build --symlink-install --packages-up-to \
-        ros2_numpy
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

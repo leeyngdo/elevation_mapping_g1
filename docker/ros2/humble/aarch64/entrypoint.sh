@@ -10,7 +10,6 @@ source /opt/ros/humble/setup.bash
 # Trust the mounted repo path to avoid Git "dubious ownership" error
 git config --global --add safe.directory /home/ws/src/elevation_mapping
 
-
 # Append Git prompt and PS1 config to .bashrc if not already present
 BASHRC="/root/.bashrc"  # Change to /home/youruser/.bashrc if needed
 

@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/ws/src/elevation_mapping_g1/build/ros2_numpy/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
