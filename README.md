@@ -2,7 +2,7 @@
 
 ## Overview
 
-![](./figs/intro.png)
+![](./figs/demo.gif)
 
 This repository provides an implementation of elevation mapping for multiple humanoid robots using a single MID-360 LiDAR. It is primarily built upon [Robot-Centric Elevation Mapping](https://github.com/ANYbotics/elevation_mapping) and [Fast Lio Mid360](https://github.com/SylarAnh/fast_lio_mid360). The package generates steady, complete, and smooth elevation maps in the odometry frame, which can be further transformed to the `torso_link` frame using data from the LiDAR, IMU, and robot pose.
 
