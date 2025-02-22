@@ -6,14 +6,59 @@
 
 This repository provides an implementation of elevation mapping for multiple humanoid robots using a single MID-360 LiDAR. It is primarily built upon [Robot-Centric Elevation Mapping](https://github.com/ANYbotics/elevation_mapping) and [Fast Lio Mid360](https://github.com/SylarAnh/fast_lio_mid360). The package generates steady, complete, and smooth elevation maps in the odometry frame, which can be further transformed to the `torso_link` frame using data from the LiDAR, IMU, and robot pose.
 
-
 **Note**: The contribution of this repository is mainly on engineering and most of the credits should be attributed to the original research paper listed below. If you find this repository useful, please consider citing them:
 
-[1] Fankhauser P, Bloesch M, Hutter M. Probabilistic terrain mapping for mobile robots with uncertain localization[J]. IEEE Robotics and Automation Letters, 2018, 3(4): 3019-3026.
+```bibtex
+@article{fankhauser_probabilistic_2018,
+	title = {Probabilistic Terrain Mapping for Mobile Robots With Uncertain Localization},
+	volume = {3},
+	url = {https://ieeexplore.ieee.org/document/8392399/},
+	doi = {10.1109/LRA.2018.2849506},
+	pages = {3019--3026},
+	journaltitle = {{IEEE} Robotics and Automation Letters},
+	author = {Fankhauser, Peter and Bloesch, Michael and Hutter, Marco},
+	date = {2018-10}
+}
 
-[2] Xu W, Zhang F. Fast-lio: A fast, robust lidar-inertial odometry package by tightly-coupled iterated kalman filter[J]. IEEE Robotics and Automation Letters, 2021, 6(2): 3317-3324.
+@misc{xu_fast-lio_2021,
+	title = {{FAST}-{LIO}: A Fast, Robust {LiDAR}-inertial Odometry Package by Tightly-Coupled Iterated Kalman Filter},
+	url = {http://arxiv.org/abs/2010.08196},
+	doi = {10.48550/arXiv.2010.08196},
+	publisher = {{arXiv}},
+	author = {Xu, Wei and Zhang, Fu},
+	date = {2021-04-14}
+}
+```
 
+The repo has been applied in the following papers:
+```bibtex
+@misc{long_learning_2024,
+	title = {Learning Humanoid Locomotion with Perceptive Internal Model},
+	url = {http://arxiv.org/abs/2411.14386},
+	doi = {10.48550/arXiv.2411.14386},
+	publisher = {{arXiv}},
+	author = {Long, Junfeng and Ren, Junli and Shi, Moji and Wang, Zirui and Huang, Tao and Luo, Ping and Pang, Jiangmiao},
+	date = {2024-11-21},
+}
 
+@misc{wang_beamdojo_2025,
+	title = {{BeamDojo}: Learning Agile Humanoid Locomotion on Sparse Footholds},
+	url = {http://arxiv.org/abs/2502.10363},
+	doi = {10.48550/arXiv.2502.10363},
+	publisher = {{arXiv}},
+	author = {Wang, Huayi and Wang, Zirui and Ren, Junli and Ben, Qingwei and Huang, Tao and Zhang, Weinan and Pang, Jiangmiao},
+	date = {2025-02-14},
+}
+
+@misc{ren_vb-com_2025,
+	title = {{VB}-Com: Learning Vision-Blind Composite Humanoid Locomotion Against Deficient Perception},
+	url = {http://arxiv.org/abs/2502.14814},
+	doi = {10.48550/arXiv.2502.14814},
+	publisher = {{arXiv}},
+	author = {Ren, Junli and Huang, Tao and Wang, Huayi and Wang, Zirui and Ben, Qingwei and Pang, Jiangmiao and Luo, Ping},
+	date = {2025-02-20},
+}
+```
 ## Installation
 
 ### Dependencies
