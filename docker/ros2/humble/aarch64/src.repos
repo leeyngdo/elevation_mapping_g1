@@ -1,8 +1,4 @@
 repositories:
-  # elevation_mapping_cupy:
-  #   type: git
-  #   url: https://github.com/jwag/elevation_mapping_cupy.git
-  #   version: ros2_humble
   # ros2_numpy needed by elevation_mapping_cupy
   ros2_numpy:
     type: git
