@@ -10,6 +10,10 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 ARG RMW_NAME=zenoh
 ARG INSTALL_EMCUPY_ROSDEPS=true
+# # Used by various ROS2 packages
+ARG RMW_IMPLEMENTATION=rmw_${RMW_NAME}_cpp
+# # Should be the same as above but with dashes instead of underscores
+ARG RMW_IMPLEMENTATION_DASH=rmw-${RMW_NAME}-cpp
 
 # Set environment variables for non-interactive installation
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -56,12 +60,15 @@ RUN apt update && apt install -y \
     python3-vcstool \
     python3-sphinx \
     python3-breathe \
+    python3-argcomplete \
     ros-dev-tools \
     ros-humble-ament-* \
+    ros-humble-${RMW_IMPLEMENTATION_DASH} \
     python3-rosdep \
     libxine2-dev \
     libtiff5-dev \
     libpostproc-dev \
+    libgeos-dev \
     libopencv-dev \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
@@ -75,10 +82,10 @@ RUN curl -LO "https://github.com/conda-forge/miniforge/releases/download/${MINIF
 # Add conda/mamba to the PATH
 ENV PATH="/opt/conda/bin:$PATH"
 RUN mamba init bash && \
-    mamba create -n kraftonros-env python=3.10 -y
+    mamba create -n elevationmap-env python=3.10 -y
 
 # Switch to using Conda env for subsequent RUNs
-SHELL ["conda", "run", "-n", "kraftonros-env", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "elevationmap-env", "/bin/bash", "-c"]
 
 # Install uv for faster package management
 RUN mamba install -c conda-forge uv
@@ -112,6 +119,8 @@ RUN uv pip install --upgrade pip \
     rospkg \
     onnxruntime \
     pyquaternion \
+    ruamel.yaml \
+    shapely==2.0.2 \
     #### For elevation_mapping_cupy ####
     numpy==1.26.4 \
     scikit-learn \
@@ -132,44 +141,35 @@ RUN apt update && apt install -y \
     python3-shapely \
     python3-scipy \
     python3-ruamel.yaml \
-    # rosdep grid_map_msgs
     ros-humble-grid-map-msgs \
-    # rosdep grid_map_ros
     ros-humble-grid-map-ros \
-    # rosdep image_transport
     ros-humble-image-transport \
-    # rosdep pcl_ros
     ros-humble-pcl-ros \
-    # rosdep cv_bridge
     ros-humble-cv-bridge \
-    # rosdep tf-transformations
     ros-humble-tf-transformations \
-    # rosdep rviz2
     ros-humble-rviz2 \
-    # replacing with rosdep gazebo_ros_pkgs 
-    ros-humble-gazebo-ros \
-    # rosdep grid_map_cv
+    ros-humble-ros-gz* \
     ros-humble-grid-map-cv \
-    # rosdep grid_map_core
     ros-humble-grid-map-core \
-    # rosdep grid_map_demos
     ros-humble-grid-map-demos \
     ros-humble-point-cloud-transport \
     #################################
-    ### For debugging elevation_mapping_cupy by setting up turtlebot3_simulations####
+    ### For debugging elevation_mapping_cupy by setting up turtlebot3_simulations ####
+    ros-humble-turtlebot3* \
     ros-humble-camera-calibration-parsers \
     ros-humble-camera-info-manager \
-    ros-humble-gazebo-plugins \
     ros-humble-turtlebot3-msgs \
     ros-humble-turtlebot3-teleop \
-    # replacing with rosdep gazebo_ros_pkgs
-    ros-humble-gazebo-ros-pkgs \
     #############################################
     && apt clean && \
-    rm -rf /var/lib/apt/lists/* ;\
+    rm -rf /var/lib/apt/lists/*
+
+# Additional python packages for ROS2
+RUN uv pip install \
+    lark
 
 # Setup rosdep
-RUN rosdep init
+RUN rm /etc/ros/rosdep/sources.list.d/20-default.list && rosdep init
 # COPY docker/extra_rosdeps.yaml /etc/ros/rosdep/sources.list.d/emcupy-rosdeps-fixed.yaml
 # Setup rosdep with extra rosdeps and install them for elevation_mapping_cupy
 # RUN --mount=type=cache,target=/home/${USERNAME}/.ros/rosdep/sources.cache \
@@ -184,11 +184,6 @@ RUN rosdep init
 RUN ln -s ${WORKSPACE}/src/elevation_mapping_cupy/docker/extra_rosdeps.yaml /etc/ros/rosdep/sources.list.d/emcupy-rosdeps.yaml && \
         echo "yaml file:///etc/ros/rosdep/sources.list.d/emcupy-rosdeps.yaml" | tee /etc/ros/rosdep/sources.list.d/00-emcupy-rosdeps.list;
 
-
-# Additional python packages for ROS2
-RUN uv pip install \
-    lark
-
 # For elevation_mapping_cupy
 ENV TURTLEBOT3_MODEL=waffle_realsense_depth
 
@@ -196,6 +191,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Inject conda activation into .bashrc
-RUN echo 'source /opt/conda/etc/profile.d/conda.sh && conda activate kraftonros-env' >> /root/.bashrc
+RUN echo 'source /opt/conda/etc/profile.d/conda.sh && conda activate elevationmap-env' >> /root/.bashrc
 RUN echo 'source /opt/ros/humble/setup.bash' >> /root/.bashrc
 ENTRYPOINT ["/entrypoint.sh"]
