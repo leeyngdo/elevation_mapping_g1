@@ -30,19 +30,24 @@ RUN apt-get update && apt-get install -y \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
-    bash miniconda.sh -b -p /opt/conda && \
-    rm miniconda.sh && \
-    conda init && \
-    conda create -n elevationmap-env python=3.8 -y
+# 5. Mambaforge (Conda) Installation
+# Mamba가 Conda보다 빠르므로 Mambaforge를 사용합니다.
+ARG MAMBAFORGE_VERSION=23.3.1-0
+ARG MAMBAFORGE_ARCH=aarch64
+RUN wget -q "https://github.com/conda-forge/miniforge/releases/download/${MAMBAFORGE_VERSION}/Mambaforge-${MAMBAFORGE_VERSION}-Linux-${MAMBAFORGE_ARCH}.sh" -O /tmp/mamba.sh && \
+    /bin/bash /tmp/mamba.sh -b -p /opt/conda && \
+    rm /tmp/mamba.sh
+    
+# Add conda/mamba to the PATH
+ENV PATH="/opt/conda/bin:$PATH"
+RUN mamba init bash && \
+    mamba create -n elevationmap-env python=3.8 -y
 
 # Switch to using Conda env for subsequent RUNs
 SHELL ["conda", "run", "-n", "elevationmap-env", "/bin/bash", "-c"]
 
 # Install PyTorch
 RUN pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-
 
 # Install other Python packages
 RUN pip install cupy-cuda11x scikit-learn
