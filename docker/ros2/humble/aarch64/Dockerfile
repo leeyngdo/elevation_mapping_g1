@@ -128,8 +128,9 @@ RUN uv pip install --upgrade pip \
     cupy-cuda12x \
     simple-parsing \
     transforms3d \
-    scipy
-
+    scipy \
+    git+https://github.com/leeyngdo/ros2_numpy.git@humble_setup
+    
 # Install ROS2 packages
 RUN apt update && apt install -y \
     python3-colcon-common-extensions \

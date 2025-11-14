@@ -260,7 +260,7 @@ void ElevationMappingWrapper::get_grid_map(grid_map::GridMap& gridMap, const std
 
   RowMatrixXd pos(1, 3);
   py::gil_scoped_acquire acquire;
-  map_.attr("get_position")(Eigen::Ref<RowMatrixXd>(pos));
+  map_.attr("get_center_position")(Eigen::Ref<RowMatrixXd>(pos));
   grid_map::Position position(pos(0, 0), pos(0, 1));
   grid_map::Length length(map_length_, map_length_);
   gridMap.setGeometry(length, resolution_, position);

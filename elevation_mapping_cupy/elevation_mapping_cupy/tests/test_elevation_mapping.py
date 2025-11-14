@@ -85,7 +85,7 @@ class TestElevationMap:
 
     def test_get_position(self, elmap_ex):
         pos = np.random.rand(1, 3)
-        elmap_ex.get_position(pos)
+        elmap_ex.get_center_position(pos)
 
     def test_clear(self, elmap_ex):
         elmap_ex.clear()
