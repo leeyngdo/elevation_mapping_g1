@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
 
 # Set the working directory
 WORKDIR /home
@@ -30,8 +30,7 @@ RUN apt-get update && apt-get install -y \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
-# 5. Mambaforge (Conda) Installation
-# Mamba가 Conda보다 빠르므로 Mambaforge를 사용합니다.
+# Mambaforge (Conda) Installation
 ARG MAMBAFORGE_VERSION=23.3.1-0
 ARG MAMBAFORGE_ARCH=aarch64
 RUN wget -q "https://github.com/conda-forge/miniforge/releases/download/${MAMBAFORGE_VERSION}/Mambaforge-${MAMBAFORGE_VERSION}-Linux-${MAMBAFORGE_ARCH}.sh" -O /tmp/mamba.sh && \
@@ -46,21 +45,15 @@ RUN mamba init bash && \
 # Switch to using Conda env for subsequent RUNs
 SHELL ["conda", "run", "-n", "elevationmap-env", "/bin/bash", "-c"]
 
-# Install PyTorch
-RUN pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-
 # Install other Python packages
 RUN pip install cupy-cuda11x scikit-learn
-RUN pip install 'git+https://github.com/facebookresearch/detectron2.git'
 
-# Install ROS
+# Install ROS Noetic
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list'
-
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-desktop-full
 RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
-# Install dependencies and ROS Noetic
 
 # Install ROS packages
 RUN apt install -y ros-noetic-pybind11-catkin \
@@ -86,16 +79,10 @@ RUN pip install --upgrade pip \
     pyyaml \
     rospkg \
     onnxruntime \
-    pyquaternion \
-    scipy==1.7 \
     ruamel.yaml \
-    opencv-python \
     simple-parsing \
-    scikit-image==0.19 \
     matplotlib \
-    catkin-tools \
-    networkx==3.0 \
-    shapely==1.7.1
+    catkin-tools
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

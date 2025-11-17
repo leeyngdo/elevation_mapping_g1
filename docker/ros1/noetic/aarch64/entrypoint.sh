@@ -1,5 +1,5 @@
 #!/bin/bash
-# Entrypoint to the DreamWaQ Isaac Gym container
+# Entrypoint to the elevation mapping container
 
 set -e
 
@@ -62,7 +62,17 @@ catkin config \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
-cd /home/ws/ && catkin build
+cd /home/ws/
+
+echo "--- [Step 1/3] Building livox_ros_driver2 package first ---"
+catkin build livox_ros_driver2
+
+echo "--- [Step 2/3] Sourcing workspace after livox build ---"
+source $BUILD_DIR/devel/setup.bash
+
+# catkin_tools는 이미 빌드된 livox는 건너뛰고 나머지 패키지를 빌드합니다
+echo "--- [Step 3/3] Building all remaining packages ---"
+catkin build
 
 echo "source $BUILD_DIR/devel/setup.bash" >> /root/.bashrc
 
