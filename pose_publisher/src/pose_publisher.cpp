@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 
     if(tf_ok) {
       geometry_msgs::PoseWithCovarianceStamped pose_stamped;
-      pose_stamped.header.stamp = ros::Time::now();
+      pose_stamped.header.stamp = transform.stamp_;
       pose_stamped.header.frame_id = tf_prefix+"/"+map_frame;
 
       pose_stamped.pose.pose.position.x = transform.getOrigin().getX();
