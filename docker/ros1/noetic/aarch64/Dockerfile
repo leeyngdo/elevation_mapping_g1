@@ -58,6 +58,8 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> /root/.bashrc
 # Install ROS packages
 RUN apt install -y ros-noetic-pybind11-catkin \
     ros-noetic-grid-map \
+    ros-noetic-tf2-sensor-msgs \
+    ros-noetic-kdl-parser-py \
     libopencv-dev \
     libeigen3-dev \
     libgmp-dev \
