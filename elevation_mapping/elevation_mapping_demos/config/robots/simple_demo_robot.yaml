@@ -16,9 +16,9 @@
 # track_point_z: 0.0
 
 # Robot.
-map_frame_id:                               odom_torso
-robot_base_frame_id:                        torso_link
-robot_pose_with_covariance_topic:           /pose
+map_frame_id:                               odom
+robot_base_frame_id:                        odom
+robot_pose_with_covariance_topic:           odom
 robot_pose_cache_size:                      200
 input_sources:
   front: # A name to identify the input source
@@ -28,11 +28,11 @@ input_sources:
     publish_on_update: true # Wheter to publish the elevation map after a callback from this source.
     sensor_processor:
       type: perfect
-track_point_frame_id:                       torso_link
+track_point_frame_id:                       odom
 track_point_x:                              0.0
 track_point_y:                              0.0
 track_point_z:                              0.0
-min_update_rate:                            50
+min_update_rate:                            5
 time_tolerance:                             1.0
 time_offset_for_point_cloud:                0.0
 sensor_processor/ignore_points_above:       0.4
@@ -49,16 +49,16 @@ max_variance:                               0.05
 mahalanobis_distance_threshold:             2.5
 multi_height_noise:                         0.001
 surface_normal_positive_axis:               z
-fused_map_publishing_rate:                  50
+fused_map_publishing_rate:                  5
 enable_visibility_cleanup:                  false
 visibility_cleanup_rate:                    1.0
 scanning_duration:                          1.0
 
 # Init submap
-initialize_elevation_map:                   false
+initialize_elevation_map:                   true
 initialization_method:                      0
 length_in_x_init_submap:                    1.6
 length_in_y_init_submap:                    1.6
 init_submap_height_offset:                  0.01
 init_submap_variance:                       0.001
-target_frame_init_submap:                   torso_link
+target_frame_init_submap:                   odom

@@ -1,7 +1,7 @@
 <launch>
   <!-- <include file="$(find realsense2_camera)/launch/demo_pointcloud.launch" /> -->
   <include file="$(find livox_ros_driver2)/launch_ROS1/msg_MID360.launch" />
-  <include file="$(find fast_lio)/launch/mapping_mid360.launch" />
+  <include file="$(find fast_lio)/launch/mapping_mid360_g1.launch" />
   <include file="$(find pose_publisher)/launch/pose_publisher.launch" />
   <node pkg="elevation_mapping_demos" type="pc_filter.py" name="pc_filter" />
   <node pkg="elevation_mapping_demos" type="publish_map_frame.py" name="publish_map_frame" />
@@ -9,7 +9,7 @@
   <node pkg="elevation_mapping" type="elevation_mapping" name="elevation_mapping" output="screen">
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/robots/simple_demo_robot.yaml" />
     <!-- <rosparam command="load" file="$(find elevation_mapping_demos)/config/elevation_maps/remove_object.yaml" /> -->
-    <rosparam command="load" file="$(find elevation_mapping)/config/sensor_processors/realsense_d435.yaml" />
+    <!-- <rosparam command="load" file="$(find elevation_mapping)/config/sensor_processors/realsense_d435.yaml" /> -->
     <rosparam command="load" file="$(find elevation_mapping_demos)/config/postprocessing/postprocessor_pipeline.yaml" />
   </node>
 

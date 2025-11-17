@@ -27,7 +27,7 @@ class PointCloudFilter:
 
         # Filter the points based on distance from the origin
         try:
-            trans = self.tf_buffer.lookup_transform("torso_link", msg.header.frame_id,
+            trans = self.tf_buffer.lookup_transform("odom", msg.header.frame_id,
                                             msg.header.stamp,
                                             rospy.Duration(0.1))
         except tf2.LookupException as ex:
