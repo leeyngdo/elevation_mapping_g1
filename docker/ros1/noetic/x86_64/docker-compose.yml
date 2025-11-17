@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  elevationmap-noetic:
+    image: elevationmap:noetic
+    runtime: ${CONTAINER_RUNTIME:-runc}
+    stdin_open: true # equivalent to -it
+    tty: true
+    network_mode: host
+    environment:
+      - ROS_DISTRO=noetic
+      - PROJECT_NAME=${PROJECT_NAME}
+      - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/tmp/.Xauthority
+      - QT_X11_NO_MITSHM=1
+      - TERM=xterm-256color
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - HOST_HOME=${HOME}
+      - ROS_MASTER_URI=${ROS_MASTER_URI}
+      - ROS_HOSTNAME=${ROS_HOSTNAME:-127.0.0.1}
+    volumes:
+      - ../../../../..:/home/ws/src
+      - ../../../../../..:/home/ws
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/tmp/.Xauthority
+    working_dir: /home/ws
+
