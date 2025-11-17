@@ -88,6 +88,9 @@ echo "--- [Step 2/3] Sourcing workspace after livox build ---"
 source $BUILD_DIR/devel/setup.bash
 
 echo "--- [Step 3/3] Building all remaining packages ---"
+cd /home/ws/src/elevation_mapping_g1/orocos_kinematics_dynamics
+git submodule update --init # initialize PyBind11
+cd /home/ws
 catkin build
 
 echo "source $BUILD_DIR/devel/setup.bash" >> /root/.bashrc
