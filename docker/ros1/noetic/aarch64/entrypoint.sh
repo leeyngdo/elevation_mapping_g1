@@ -65,12 +65,28 @@ catkin config \
 cd /home/ws/
 
 echo "--- [Step 1/3] Building livox_ros_driver2 package first ---"
-catkin build livox_ros_driver2
+cd /home/ws/src/elevation_mapping_g1/livox_ros_driver2/Livox-SDK2/
+mkdir -p build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 && make -j
+sudo make install
+cd /home/ws/src/elevation_mapping_g1/livox_ros_driver2/
+cp -f package_ROS1.xml package.xml
+cd /home/ws/
+# clear `build/` folder.
+# TODO: Do not clear these folders, if the last build is based on the same ROS version.
+rm -rf build/
+rm -rf devel/
+rm -rf install/
+# clear src/CMakeLists.txt if it exists.
+if [ -f src/CMakeLists.txt ]; then
+    rm -f src/CMakeLists.txt
+fi
+catkin build livox_ros_driver2 -DROS_EDITION="ROS1" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 
 echo "--- [Step 2/3] Sourcing workspace after livox build ---"
 source $BUILD_DIR/devel/setup.bash
 
-# catkin_tools는 이미 빌드된 livox는 건너뛰고 나머지 패키지를 빌드합니다
 echo "--- [Step 3/3] Building all remaining packages ---"
 catkin build
 
