@@ -1,3 +1,9 @@
 [submodule "livox_ros_driver2/Livox-SDK2"]
 	path = livox_ros_driver2/Livox-SDK2
 	url = https://github.com/Livox-SDK/Livox-SDK2
+[submodule "kindr"]
+	path = kindr
+	url = https://github.com/ANYbotics/kindr
+[submodule "orocos_kinematics_dynamics"]
+	path = orocos_kinematics_dynamics
+	url = https://github.com/orocos/orocos_kinematics_dynamics
